@@ -1,4 +1,4 @@
-# Mortgage Calculator plugin for Craft CMS 3.x
+# Mortgage Calculator plugin for Craft CMS 4.x
 
 Plugin to calculate UK mortgage costs
 
@@ -6,7 +6,13 @@ Plugin to calculate UK mortgage costs
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+This plugin requires [PHP](https://www.php.net/) 7.4 - 8.2 and supports [Craft CMS](https://www.craftcms.com/) 3.x and 4.x.
+
+| Mortgage Calculator  | Craft 3            | Craft 4            |
+|----------------------|--------------------|--------------------|
+| 1.x                  | :white_check_mark: | :x:                |
+| 2.x                  | :x:                | :white_check_mark: |
+
 
 ## Installation
 
@@ -18,26 +24,8 @@ To install the plugin, follow these instructions.
 
 2. Then tell Composer to load the plugin:
 
-        composer require burnthebook/mortgage-calculator
+        composer require burnthebook/craft-mortgage-calculator
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Mortgage Calculator.
 
-## Mortgage Calculator Overview
-
--Insert text here-
-
-## Configuring Mortgage Calculator
-
--Insert text here-
-
-## Using Mortgage Calculator
-
--Insert text here-
-
-## Mortgage Calculator Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
-
-Brought to you by [Jake Noble](https://www.burnthebook.co.uk/)
+Brought to you by [Burnthebook](https://www.burnthebook.co.uk)
