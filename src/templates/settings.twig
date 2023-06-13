@@ -7,7 +7,7 @@
  *
  * @author    Jake Noble
  * @copyright Copyright (c) 2020 Jake Noble
- * @link      https://www.burnthebook.co.uk/
+ * @link      https:www.burnthebook.co.uk/
  * @package   MortgageCalculator
  * @since     1.0.0
  */
@@ -20,16 +20,69 @@
 
 {% do view.registerAssetBundle("burnthebook\\mortgagecalculator\\assetbundles\\mortgagecalculator\\MortgageCalculatorAsset") %}
 
-{#{{ forms.textField({#}
-{#    label: 'Some Field',#}
-{#    instructions: 'Enter some setting here.',#}
-{#    id: 'someAttribute',#}
-{#    name: 'someAttribute',#}
-{#    value: settings['someAttribute']})#}
-{#}}#}
 
 <div class="row">
+    <div class="heading">
+        <label id="settings-stampDutySettings-label" for="settings-stampDutySettings">Stamp Duty Rates</label>
+    </div>
+    <div id="settings-stampDutySettings-instructions" class="instructions">
+        <p>Please fill in the table below defining stamp duty paid per price bracket</p>
+    </div>
+    {{ 
+        forms.editableTable({
+            id: 'stampDutySettings',
+            label: 'Stamp Duty Rates',
+            instructions: 'Please fill in the table below defining stamp duty paid per price bracket',
+            name: 'stampDutySettings',
+            required: true,
+            cols: {
+                location: {
+                    heading: 'Location',
+                    class: 'thin',
+                    type: 'select',
+                    options: {
+                        'ENG': 'England & NI',
+                        'SCO': 'Scotland',
+                        'WALES': 'Wales'
+                    }
+                },
 
-    {{ stampDutySettingsTable | raw}}
+                bracketMin: {
+                    heading: 'Bracket Minimum (£)',
+                    class: 'thin',
+                    type: 'text'
+                },
 
+                bracketMax: {
+                    heading: 'Bracket Maximum  (£)',
+                    class: 'thin',
+                    type: 'text'
+                },
+
+                first: {
+                    heading: 'First Home (%)',
+                    type: 'text',
+                    class: 'thin'
+                },
+
+                second: {
+                    heading: 'Second Home (%)',
+                    type: 'text',
+                    class: 'thin'
+                },
+
+                property: {
+                    heading: 'First property?',
+                    class: 'thin',
+                    type: 'select',
+                    options: {
+                        '1': 'Yes',
+                        '0': 'No'
+                    }
+                }
+            },
+            rows: stampDutySettings,
+            addRowLabel: 'Add',
+        })
+    }}
 </div>

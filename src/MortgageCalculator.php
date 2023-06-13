@@ -198,69 +198,70 @@ class MortgageCalculator extends Plugin
 			$stampDutySettings = array(array('setting' => '', 'value' => ''));
 		}
 
-		$stampDutySettingsTable = Craft::$app->getView()->renderTemplateMacro('_includes/forms', 'editableTableField', array(
-			array(
-				'label' => 'Stamp Duty Rates',
-				'instructions' => 'Please fill in the table below defining stamp duty paid per price bracket',
-				'id' => 'stampDutySettings',
-				'name' => 'stampDutySettings',
-				'cols' => array(
+		// $stampDutySettingsTable = Craft::$app->getView()->renderTemplateMacro('_includes/forms', 'editableTableField', array(
+		// 	array(
+		// 		'label' => 'Stamp Duty Rates',
+		// 		'instructions' => 'Please fill in the table below defining stamp duty paid per price bracket',
+		// 		'id' => 'stampDutySettings',
+		// 		'name' => 'stampDutySettings',
+				// 'cols' => array(
 
-					'location' => array(
-						'heading' => 'Location',
-						'class' => 'thin',
-						'type' => 'select',
-						'options' => array(
-							'ENG' => 'England & NI',
-							'SCO' => 'Scotland',
-                            'WALES' => 'Wales'
-						)
-					),
+				// 	'location' => array(
+				// 		'heading' => 'Location',
+				// 		'class' => 'thin',
+				// 		'type' => 'select',
+				// 		'options' => array(
+				// 			'ENG' => 'England & NI',
+				// 			'SCO' => 'Scotland',
+                //             'WALES' => 'Wales'
+				// 		)
+				// 	),
 
-					'bracketMin' => array(
-						'heading' => 'Bracket Minimum (£)',
-						'class' => 'thin',
-						'type' => 'text'
-					),
+				// 	'bracketMin' => array(
+				// 		'heading' => 'Bracket Minimum (£)',
+				// 		'class' => 'thin',
+				// 		'type' => 'text'
+				// 	),
 
-					'bracketMax' => array(
-						'heading' => 'Bracket Maximum  (£)',
-						'class' => 'thin',
-						'type' => 'text'
-					),
+				// 	'bracketMax' => array(
+				// 		'heading' => 'Bracket Maximum  (£)',
+				// 		'class' => 'thin',
+				// 		'type' => 'text'
+				// 	),
 
-					'first' => array(
-						'heading' => 'First Home (%)',
-						'type' => 'text',
-						'class' => 'thin'
-					),
+				// 	'first' => array(
+				// 		'heading' => 'First Home (%)',
+				// 		'type' => 'text',
+				// 		'class' => 'thin'
+				// 	),
 
-					'second' => array(
-						'heading' => 'Second Home (%)',
-						'type' => 'text',
-						'class' => 'thin'
-					),
+				// 	'second' => array(
+				// 		'heading' => 'Second Home (%)',
+				// 		'type' => 'text',
+				// 		'class' => 'thin'
+				// 	),
 
-					'property' => array(
-						'heading' => 'First property?',
-						'class' => 'thin',
-						'type' => 'select',
-						'options' => array(
-							'1' => 'Yes',
-							'0' => 'No'
-						)
-					)
+				// 	'property' => array(
+				// 		'heading' => 'First property?',
+				// 		'class' => 'thin',
+				// 		'type' => 'select',
+				// 		'options' => array(
+				// 			'1' => 'Yes',
+				// 			'0' => 'No'
+				// 		)
+				// 	)
 
-				),
-				'rows' => $stampDutySettings,
-				'addRowLabel' => 'Add',
-			)
-		));
+				// ),
+		// 		'rows' => $stampDutySettings,
+		// 		'addRowLabel' => 'Add',
+		// 	)
+		// ));
 
 		return Craft::$app->view->renderTemplate(
 			'mortgage-calculator/settings',
 			[
-				'stampDutySettingsTable' => $stampDutySettingsTable,
+				// 'stampDutySettingsTable' => $stampDutySettingsTable,
+                'stampDutySettings' => $stampDutySettings,
 				'settings' => $this->getSettings()
 			]
 		);
