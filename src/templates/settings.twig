@@ -1,0 +1,35 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Mortgage Calculator plugin for Craft CMS 3.x
+ *
+ * Mortgage Calculator Settings.twig
+ *
+ * @author    Jake Noble
+ * @copyright Copyright (c) 2020 Jake Noble
+ * @link      https://www.burnthebook.co.uk/
+ * @package   MortgageCalculator
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{#{% includeCssResource "mortgagecalculator/css/MortgageCalculator_Style.css" %}#}
+{#{% includeJsResource "mortgagecalculator/js/MortgageCalculator_StampDuty.js" %}#}
+
+{% do view.registerAssetBundle("burnthebook\\mortgagecalculator\\assetbundles\\mortgagecalculator\\MortgageCalculatorAsset") %}
+
+{#{{ forms.textField({#}
+{#    label: 'Some Field',#}
+{#    instructions: 'Enter some setting here.',#}
+{#    id: 'someAttribute',#}
+{#    name: 'someAttribute',#}
+{#    value: settings['someAttribute']})#}
+{#}}#}
+
+<div class="row">
+
+    {{ stampDutySettingsTable | raw}}
+
+</div>

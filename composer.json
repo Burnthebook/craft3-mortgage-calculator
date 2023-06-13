@@ -1,0 +1,46 @@
+{
+    "name": "burnthebook/mortgage-calculator",
+    "description": "Plugin to calculate UK mortgage costs",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "mortgage calculator"
+    ],
+    "support": {
+        "docs": "https://github.com/Mortgage Calculator/mortgage-calculator/blob/master/README.md",
+        "issues": "https://github.com/Mortgage Calculator/mortgage-calculator/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jake Noble",
+            "homepage": "https://www.burnthebook.co.uk/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0"
+    },
+    "require-dev": {
+      "craftcms/cms": "^3.2.0",
+      "codeception/codeception": "^3.0",
+      "vlucas/phpdotenv": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "burnthebook\\mortgagecalculator\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Mortgage Calculator",
+        "handle": "mortgage-calculator",
+        "developer": "Jake Noble",
+        "developerUrl": "https://www.burnthebook.co.uk/",
+        "documentationUrl": "https://github.com/Mortgage Calculator/mortgage-calculator/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/Mortgage Calculator/mortgage-calculator/master/CHANGELOG.md",
+        "class": "burnthebook\\mortgagecalculator\\MortgageCalculator"
+    }
+}

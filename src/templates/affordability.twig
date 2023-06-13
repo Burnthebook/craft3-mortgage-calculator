@@ -1,0 +1,276 @@
+{% js at endBody %}
+    {% include 'templates/js.js' %}
+{% endjs %}
+
+{% set data = craft.mortgageCalculator.calculator('stampDuty') %}
+
+<script type="text/javascript">
+
+    //here we traverse the data from twig to jquery, note that jquery magically parses json, making
+    //parseJSON redundant on the other end, had me perplexed for a while
+
+    var data = {{ data['stampDuty']['stampDutySettings']|json_encode|raw }};
+
+    window.onload = function() {
+        if (window.jQuery) {
+            $(document).ready(function () {
+                traverseRates(data);
+
+                //--custom select
+                $("#calc-option-1").on("click", function () {
+
+                    if (!$(this).hasClass("calc-option--selected")) {
+                        $(this).addClass("calc-option--selected");
+                        $("#calc-option-2").removeClass("calc-option--selected");
+                        $("#m-calc-requirement").val('purchase');
+                    }
+                });
+
+                $("#calc-option-2").on("click", function () {
+
+                    if (!$(this).hasClass("calc-option--selected")) {
+                        $(this).addClass("calc-option--selected");
+                        $("#calc-option-1").removeClass("calc-option--selected");
+                        $("#m-calc-requirement").val('remortgage');
+                    }
+                });
+
+                $("#calc-toggle-no").on("click", function () {
+                    if (!$(this).hasClass("calc-toggle--selected")) {
+                        $(this).addClass("calc-toggle--selected");
+                        $("#calc-toggle-yes").removeClass("calc-toggle--selected");
+                        $("#firstTimeBuyer").val('no');
+                    }
+                });
+
+                $("#calc-toggle-yes").on("click", function () {
+                    if (!$(this).hasClass("calc-toggle--selected")) {
+                        $(this).addClass("calc-toggle--selected");
+                        $("#calc-toggle-no").removeClass("calc-toggle--selected");
+                        $("#firstTimeBuyer").val('yes');
+                    }
+                });
+            });
+        }
+    }
+</script>
+
+<div class="wrapper wrapper--light">
+
+    <div class="row calc-result-wrapper">
+
+        <div class="columns medium-6">
+
+            <div class="round-container round-container--with-arrow">
+
+                <form id="affordabilityCalculator" class="calc-form">
+
+                    <label for="m-calc-requirement">What is your mortgage requirement?</label>
+
+                    <div class="calc-options">
+                        <button type="button" class="calc-option calc-option--selected" id="calc-option-1">Buying a house</button>
+                        <span class="hide-for-small-only calc-options__or">Or</span>
+                        <button type="button" class="calc-option" id="calc-option-2">Remortgage</button>
+                    </div>
+
+                    <!-- the select is here for basic functionality & fallback -->
+                    <select name="requirement" id="m-calc-requirement" class="hide">
+                        <option value="purchase">Home buying</option>
+                        <option value="remortgage">Remortgage</option>
+                    </select>
+
+                    <div class="calculator-fields">
+                        <label for="m-calc-price" data-labels="propertyValue"></label>
+                        <div class="info-icon__wrapper">
+                            <input type="text" name="price" placeholder="E.g. £100,000" onkeyup="prettifyMoney(this)" id="m-calc-price">
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip bottom show-for-medium" data-disable-hover="false" tabindex="2"
+                                    title="" data-title-labels="propertyValueTooltip">
+                            </button>
+
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip left show-for-small-only" data-disable-hover="false" tabindex="2"
+                                    title="" data-title-labels="propertyValueTooltip">
+                            </button>
+                        </div>
+
+                        <label for="m-calc-income">What is your combined annual gross income?</label>
+                        <div class="info-icon__wrapper">
+                            <input type="text" name="income" placeholder="E.g. £40,000" onkeyup="prettifyMoney(this)" id="m-calc-income">
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip bottom show-for-medium" data-disable-hover="false" tabindex="2"
+                                    title="This is your income before tax. If you are self-employed, take an average of the last two years of net profit. If you receive any additional income from commission, overtime, bonuses, maintenance, benefits or any other source, give us a call and we will complete the calculations for you.">
+                            </button>
+
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip left show-for-small-only" data-disable-hover="false" tabindex="2"
+                                    title="This is your income before tax. If you are self-employed, take an average of the last two years of net profit. If you receive any additional income from commission, overtime, bonuses, maintenance, benefits or any other source, give us a call and we will complete the calculations for you.">
+                            </button>
+                        </div>
+
+                        <div id="calc-deposit">
+                            <label for="m-calc-deposit">How much will your deposit be?</label>
+                            <div class="info-icon__wrapper">
+                                <input type="text" name="deposit" placeholder="E.g. £15,000" onkeyup="prettifyMoney(this)" id="m-calc-deposit">
+                                <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip bottom show-for-medium" data-disable-hover="false" tabindex="2"
+                                        title="This could be your savings, a gift or a combination of these.">
+                                </button>
+
+                                <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip left show-for-small-only" data-disable-hover="false" tabindex="2"
+                                        title="This could be your savings, a gift or a combination of these.">
+                                </button>
+                            </div>
+                        </div>
+
+                        <label for="m-calc-interest">Optional: Do you know your interest rate?</label>
+                        <div class="info-icon__wrapper">
+                            <input type="text" name="interest" placeholder="E.g. 4.75% or leave blank" id="m-calc-interest">
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip bottom show-for-medium" data-disable-hover="false" tabindex="2"
+                                    title="If you have an idea of the interest rate you think you will be paying this will work out a more accurate monthly payment. If not our calculator assumes an interest rate. Depending on your circumstances this may be higher or lower.">
+                            </button>
+
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip left show-for-small-only" data-disable-hover="false" tabindex="2"
+                                    title="If you have an idea of the interest rate you think you will be paying this will work out a more accurate monthly payment. If not our calculator assumes an interest rate. Depending on your circumstances this may be higher or lower.">
+                            </button>
+                        </div>
+
+                        <label for="m-calc-interest">Mortgage Term (Years)</label>
+                        <div class="info-icon__wrapper">
+                            <input type="text" name="term" placeholder="E.g. 25 or leave blank" id="m-calc-term">
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip bottom show-for-medium" data-disable-hover="false" tabindex="2"
+                                    title="The minimum amount of years is 5 and the maximum is 40.">
+                            </button>
+
+                            <button type="button" data-tooltip aria-haspopup="true" class="info-icon has-tip left show-for-small-only" data-disable-hover="false" tabindex="2"
+                                    title="The minimum amount of years is 5 and the maximum is 40.">
+                            </button>
+                        </div>
+
+                        <div id="calc-ftb">
+                            <label for="firstTimeBuyer">First time buyer?</label>
+                            <div class="calc-toggler-wrapper">
+                                <div class="calc-toggler">
+                                    <button type="button" class="calc-toggle calc-toggle" id="calc-toggle-yes">Yes</button>
+                                    <button type="button" class="calc-toggle calc-toggle--selected" id="calc-toggle-no">No</button>
+                                </div>
+                            </div>
+                            <!-- the select is here for basic functionality & fallback -->
+                            <select name="first" id="firstTimeBuyer" class="hide">
+                                <option value="yes">Yes</option>
+                                <option value="no" selected>No</option>
+                            </select>
+                        </div>
+
+                        <input class="button button--solid-blue fullwidth-on-small" type="submit" name="submit" value="Calculate Mortgage">
+
+                    </div>
+
+
+                </form>
+                <div class="round-container__arrow"></div>
+            </div>
+
+        </div>
+
+        <div class="columns medium-6 calc-result calc-result--hide" id="calc-result">
+
+            <div class="calc-result__content-wrapper">
+
+                <div class="hide" id="no-products">
+                    <div class="row">
+                        <div class="columns large-8 large-centered">
+                            <p>Sorry, we couldn't find any suitable products for you at this time</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="hide" id="products">
+                    <div class="row">
+                        <div class="columns small-12">
+                            <p data-labels="affordanceMessage"></p>
+
+                            <span class="calc-result__heading" id="affordance">
+                                <!-- replace me -->
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="columns">
+
+                            <div class="row small-up-2 collapse calc-result-boxes">
+
+                                <div class="column column-block">
+                                    <div class="calc-result-box">
+                                        <span class="calc-result-box__title" data-labels="mortgageAmount"></span>
+                                        <span id="loan-amount" class="calc-result-box__number">
+                                            <!-- filled dynamically -->
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="column column-block" id="result-block-deposit">
+                                    <div class="calc-result-box">
+                                        <span class="calc-result-box__title">Deposit: </span>
+                                        <span id="deposit" class="calc-result-box__number">
+                                            <!-- filled dynamically -->
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="column column-block" id="result-block-stamp-duty">
+                                    <div class="calc-result-box">
+                                        <span class="calc-result-box__title">Stamp Duty: </span>
+                                        <span class="calc-result-box__number" id="stamp-duty">
+                                            <!-- filled dynamically -->
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="column column-block">
+                                    <div class="calc-result-box">
+                                        <span class="calc-result-box__title">Monthly Repayments: </span>
+                                        <span id="monthly-payments" class="calc-result-box__number">
+                                            <!-- filled dynamically -->
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div><!-- row -->
+                        </div><!-- columns -->
+                    </div><!-- row -->
+
+
+
+                    <p id="interest-assumption"></p>
+
+                    <div class="row">
+                        <div class="columns large-8 small-centered">
+                            <p class="calc-result__small">This is a guide based on the information provided and we have assumed a mortgage term of <span class="calc-data-years"></span> years. A full mortgage application is required before a lender will agree a mortgage loan.</p>
+                            <p class="calc-result__small" id="calc-remortgage-note" style="display: none">Please note: The Total Borrowing must not exceed 95% of the estimated value of your property. There may also be restrictions depending on what the additional funds are for.</p>
+                        </div>
+                    </div>
+
+                    <p class="calc-result__cta-wrapper show-for-small-only">
+                        Call us FREE today <a href="tel:{{ chrome.phoneNumInt }}">{{ chrome.phoneNum }}</a>
+                    </p>
+
+                    <p class="calc-result__cta show-for-medium">Call us FREE today {{ chrome.phoneNum }}</p>
+
+                    <a href="/contact" class="button button--solid-blue fullwidth-on-small">Talk To Us Today</a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="columns medium-6 show-for-medium" id="calc-result-filler">
+            <div class="calc-result-filler">
+                <div class="calc-result-filler__content">
+                    <p class="calc-result-filler__cta">Fill in the form to calculate your <br>mortgage payments</p>
+                    <p class="calc-result-filler__or">Or</p>
+                    <p class="calc-result__cta show-for-medium">Call us FREE today {{ chrome.phoneNum }}</p>
+                    <a href="/contact" class="button button--solid-blue fullwidth-on-small">Talk To Us Today</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
