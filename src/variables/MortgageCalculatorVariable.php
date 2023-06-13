@@ -37,7 +37,7 @@ class MortgageCalculatorVariable
 	 * @param string $type
 	 * @return array
 	 */
-	public function calculator($type = 'stampDuty')
+	public function calculator($type = 'stampDuty') : array
 	{
 		$settings = array();
 		$settings[$type] = MortgageCalculator::getInstance()->getSettings();
@@ -53,7 +53,7 @@ class MortgageCalculatorVariable
 	 * @throws \Twig\Error\SyntaxError
 	 * @throws \yii\base\Exception
 	 */
-	public function render($type = 'stampDuty')
+	public function render($type = 'stampDuty') : string
 	{
 		$view = Craft::$app->getView();
 

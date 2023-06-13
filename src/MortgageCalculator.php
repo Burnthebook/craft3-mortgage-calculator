@@ -63,21 +63,21 @@ class MortgageCalculator extends Plugin
 	 *
 	 * @var string
 	 */
-	public $schemaVersion = '1.0.0';
+	public string $schemaVersion = '1.0.0';
 
 	/**
 	 * Set to `true` if the plugin should have a settings view in the control panel.
 	 *
 	 * @var bool
 	 */
-	public $hasCpSettings = true;
+	public bool $hasCpSettings = true;
 
 	/**
 	 * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
 	 *
 	 * @var bool
 	 */
-	public $hasCpSection = false;
+	public bool $hasCpSection = false;
 
 	// Public Methods
 	// =========================================================================
@@ -177,7 +177,7 @@ class MortgageCalculator extends Plugin
 	 *
 	 * @return \craft\base\Model|null
 	 */
-	protected function createSettingsModel()
+	protected function createSettingsModel() : ?Settings
 	{
 		return new Settings();
 	}

@@ -25,6 +25,7 @@
 return [
 
     // This controls blah blah blah
+    /** @todo is this needed? */
     "someAttribute" => true,
 
 ];

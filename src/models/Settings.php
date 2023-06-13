@@ -35,9 +35,9 @@ class Settings extends Model
 	// Public Properties
 	// =========================================================================
 
-	public $stampDuty = [];
+	public array $stampDuty = [];
 
-	public $stampDutySettings = [];
+	public array $stampDutySettings = [];
 
 	// Public Methods
 	// =========================================================================
@@ -52,17 +52,8 @@ class Settings extends Model
 	 *
 	 * @return array
 	 */
-	public function rules()
+	public function rules() : array
 	{
 		return [];
-//		return [
-//			['stampDuty', 'string'],
-//			['stampDutySettings', 'string']
-//		];
-
-//        return [
-//            ['someAttribute', 'string'],
-//            ['someAttribute', 'default', 'value' => 'Some Default'],
-//        ];
 	}
 }

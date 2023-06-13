@@ -39,7 +39,7 @@ class MortgageCalculatorTwigExtension extends AbstractExtension
      *
      * @return string The extension name
      */
-    public function getName()
+    public function getName() : string
     {
         return 'MortgageCalculator';
     }
@@ -49,9 +49,10 @@ class MortgageCalculatorTwigExtension extends AbstractExtension
      *
      *      {{ 'something' | someFilter }}
      *
+     * @todo is this needed?
      * @return array
      */
-    public function getFilters()
+    public function getFilters() : array
     {
         return [
             new TwigFilter('someFilter', [$this, 'someInternalFunction']),
@@ -63,9 +64,10 @@ class MortgageCalculatorTwigExtension extends AbstractExtension
      *
      *      {% set this = someFunction('something') %}
      *
-    * @return array
+     * @todo is this needed?
+     * @return array
      */
-    public function getFunctions()
+    public function getFunctions() : array
     {
         return [
             new TwigFunction('someFunction', [$this, 'someInternalFunction']),
@@ -77,9 +79,10 @@ class MortgageCalculatorTwigExtension extends AbstractExtension
      *
      * @param null $text
      *
+     * @todo is this needed?
      * @return string
      */
-    public function someInternalFunction($text = null)
+    public function someInternalFunction($text = null) : string
     {
         $result = $text . " in the way";
 

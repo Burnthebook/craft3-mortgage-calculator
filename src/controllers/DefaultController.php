@@ -46,7 +46,7 @@ class DefaultController extends Controller
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    protected $allowAnonymous = ['index', 'do-something'];
+    protected array|bool|int $allowAnonymous = ['index', 'do-something'];
 
     // Public Methods
     // =========================================================================
@@ -54,10 +54,11 @@ class DefaultController extends Controller
     /**
      * Handle a request going to our plugin's index action URL,
      * e.g.: actions/mortgage-calculator/default
+     * @todo is this needed?
      *
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex() : mixed
     {
         $result = 'Welcome to the DefaultController actionIndex() method';
 
@@ -67,10 +68,11 @@ class DefaultController extends Controller
     /**
      * Handle a request going to our plugin's actionDoSomething URL,
      * e.g.: actions/mortgage-calculator/default/do-something
+     * @todo is this needed?
      *
      * @return mixed
      */
-    public function actionDoSomething()
+    public function actionDoSomething() : mixed
     {
         $result = 'Welcome to the DefaultController actionDoSomething() method';
 
