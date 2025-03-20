@@ -2,7 +2,7 @@
     "name": "burnthebook/craft-mortgage-calculator",
     "description": "Craft CMS Plugin to calculate UK mortgage costs",
     "type": "craft-plugin",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -27,12 +27,12 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^4.0.0"
+        "craftcms/cms": "^5.0.0"
     },
     "require-dev": {
-      "craftcms/cms": "^4.0.0",
-      "codeception/codeception": "^3.0",
-      "vlucas/phpdotenv": "^3.0"
+      "craftcms/cms": "^5.0.0",
+      "vlucas/phpdotenv": "^3.0",
+        "craftcms/phpstan": "dev-main"
     },
     "autoload": {
         "psr-4": {
@@ -47,5 +47,13 @@
         "documentationUrl": "https://github.com/burnthebook/craft3-mortgage-calculator/blob/master/README.md",
         "changelogUrl": "https://raw.githubusercontent.com/burnthebook/craft3-mortgage-calculator/master/CHANGELOG.md",
         "class": "burnthebook\\mortgagecalculator\\MortgageCalculator"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
 }
