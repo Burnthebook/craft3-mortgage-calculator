@@ -37,12 +37,17 @@ class MortgageCalculatorVariable
 	 * @param string $type
 	 * @return array
 	 */
-	public function calculator($type = 'stampDuty') : array
+	public function calculator($type = 'stampDuty'): array
 	{
-		$settings = array();
-		$settings[$type] = MortgageCalculator::getInstance()->getSettings();
+		$settings = MortgageCalculator::getInstance()->getSettings();
 
-		return $settings;
+		$data = $settings->stampDutySettings;
+
+		usort($data, function ($a, $b) {
+			return (float)$a['bracketMin'] <=> (float)$b['bracketMin'];
+		});
+
+		return ['stampDuty' => ['stampDutySettings' => $data]];
 	}
 
 	/**
@@ -53,7 +58,7 @@ class MortgageCalculatorVariable
 	 * @throws \Twig\Error\SyntaxError
 	 * @throws \yii\base\Exception
 	 */
-	public function render($type = 'stampDuty') : string
+	public function render($type = 'stampDuty'): string
 	{
 		$view = Craft::$app->getView();
 
