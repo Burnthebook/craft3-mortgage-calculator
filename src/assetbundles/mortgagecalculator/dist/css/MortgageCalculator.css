@@ -79,3 +79,8 @@ input.cmn-toggle-round:checked + label:after {
 	-ms-user-select: none;
 	user-select: none;
 }
+
+.heading,
+.instructions {
+	margin-bottom: 10px;
+}
