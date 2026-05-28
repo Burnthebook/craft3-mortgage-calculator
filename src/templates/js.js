@@ -2,47 +2,32 @@
 
     function getStampDuty(price) {
 
-        let origPrice = price;
         let location = 'ENG';
-        let property = 'first';
-
+        let column = 'first';
         let first = $('#firstTimeBuyer').val() === 'yes' ? '1' : '0';
 
-//no stamp duty to pay ...yet
         let payable = 0;
-        let difference = 0;
 
         $.each(rates, function (i) {
+            let r = rates[i];
+            if (r['location'] != location || r['property'] != first) return;
 
+            let bracketMin = parseFloat(r['bracketMin']);
+            let bracketMax = parseFloat(r['bracketMax']);
+            let rate = parseFloat(r[column]);
 
-            if (rates[i]['location'] == location && rates[i]['property'] == first) {
+            if (isNaN(bracketMin)) bracketMin = 0;
+            if (isNaN(bracketMax)) bracketMax = Infinity;
+            if (isNaN(rate)) return;
 
-// at this point we only have rates that match the location
+            // Defensive: skip nonsensical brackets where min >= max (e.g. data entry typo).
+            if (bracketMin >= bracketMax) return;
 
-                bracketMin = parseInt(rates[i]['bracketMin']);
-                bracketMax = parseInt(rates[i]['bracketMax']);
+            let portionEnd = Math.min(price, bracketMax);
+            if (portionEnd <= bracketMin) return;
 
-                if (isNaN(bracketMax)) {
-                    bracketMax = 'e';
-                }
-
-
-                if (origPrice > bracketMin) {
-
-
-                    if (bracketMax === 'e' || origPrice <= bracketMax) {
-                        bracketMax = bracketMin + price;
-                    }
-
-                    difference = bracketMax - bracketMin;
-
-                    payable += (difference / 100) * rates[i][property];
-                    price = price - difference;
-
-                }
-
-            }
-
+            let amountInBracket = portionEnd - bracketMin;
+            payable += (amountInBracket / 100) * rate;
         });
 
         return payable;
@@ -300,50 +285,52 @@
             first = 0;
         }
 
-//no stamp duty to pay ...yet
         let payable = 0;
-        let difference = 0;
         let totalCost = 0;
-        let payableInBracket = 0;
-
-        let html = '<div class="row">';
+        let breakdown = [];
 
         $.each(rates, function (i) {
-            if (rates[i]['location'] == location && rates[i]['property'] == first) {
-                // at this point we only have rates that match the location
+            let r = rates[i];
+            if (r['location'] != location || r['property'] != first) return;
 
-                bracketMin = parseInt(rates[i]['bracketMin']);
-                bracketMax = parseInt(rates[i]['bracketMax']);
+            let bracketMin = parseFloat(r['bracketMin']);
+            let bracketMax = parseFloat(r['bracketMax']);
+            let rate = parseFloat(r[property]);
 
-                if (isNaN(bracketMax)) {
-                    bracketMax = 'e';
-                }
+            if (isNaN(bracketMin)) bracketMin = 0;
+            if (isNaN(bracketMax)) bracketMax = Infinity;
+            if (isNaN(rate)) return;
 
-                if (origPrice > bracketMin) {
+            // Defensive: skip nonsensical brackets where min >= max (e.g. data entry typo).
+            if (bracketMin >= bracketMax) return;
 
-                    if (bracketMax === 'e' || origPrice <= bracketMax) {
-                        bracketMax = bracketMin + price;
-                    }
+            let portionEnd = Math.min(origPrice, bracketMax);
+            if (portionEnd <= bracketMin) return;
 
-                    difference = bracketMax - bracketMin;
+            let amountInBracket = portionEnd - bracketMin;
+            let payableInBracket = (amountInBracket / 100) * rate;
 
-                    payableInBracket = (difference / 100) * rates[i][property];
-
-                    html += '<div class="row calc-result__bracket">';
-                    html += '<p class="columns small-8 medium-9">You pay ' + rates[i][property] + '% up to £' + money(bracketMax) + '</p>';
-                    html += '<p class="columns small-4 medium-3 calc-result__bracket-right">£' + money(payableInBracket.toFixed(2)) + '</p>';
-                    html += '</div><!-- row -->';
-
-                    payable += (difference / 100) * rates[i][property];
-                    price = price - difference;
-
-                    totalCost = origPrice + payable;
-
-                }
-            }
+            payable += payableInBracket;
+            breakdown.push({
+                bracketMin: bracketMin,
+                upTo: portionEnd,
+                rate: rate,
+                payableInBracket: payableInBracket
+            });
         });
 
-        html += '';
+        // Sort breakdown ascending so display is always logical, even if source data is unordered.
+        breakdown.sort(function (a, b) { return a.bracketMin - b.bracketMin; });
+
+        let html = '<div class="row">';
+        breakdown.forEach(function (b) {
+            html += '<div class="row calc-result__bracket">';
+            html += '<p class="columns small-8 medium-9">You pay ' + b.rate + '% up to £' + money(b.upTo) + '</p>';
+            html += '<p class="columns small-4 medium-3 calc-result__bracket-right">£' + money(b.payableInBracket.toFixed(2)) + '</p>';
+            html += '</div><!-- row -->';
+        });
+
+        totalCost = origPrice + payable;
 
         $('#stampDutyPayable').html('£' + money(payable.toFixed(2)));
         $('#stampDutyBrackets').html(html);
